@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jethro & Andrea's Story ❤️</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+        :root {
+            --dark-bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #ec4899;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            padding: 4rem 1rem;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .heart-icon {
+            color: var(--accent);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Timer Styles */
+        .timer-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .total-days {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .timer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .timer-unit {
+            text-align: center;
+        }
+
+        .timer-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .memory-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .memory-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .memory-date {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .memory-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .polaroid-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            min-height: 400px;
+        }
+
+        .polaroid-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+            flex: 0 1 300px;
+            transform-origin: center;
+        }
+
+        .polaroid-container:nth-child(3n+1) {
+            transform: rotate(-3deg);
+        }
+
+        .polaroid-container:nth-child(3n+2) {
+            transform: rotate(2deg);
+        }
+
+        .polaroid-container:nth-child(3n) {
+            transform: rotate(-2deg);
+        }
+
+        .polaroid-container:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 2;
+        }
+
+        .memory-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .polaroid-caption {
+            color: #1a1a1a;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            padding-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .memory-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Navigation Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .nav-button {
+            background: var(--card-bg);
+            border: none;
+            color: var(--text-primary);
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-button:hover:not(:disabled),
+        .nav-button.active {
+            background: rgba(30, 41, 59, 1);
+        }
+
+        @keyframes buttonPress {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .nav-button.active {
+            animation: buttonPress 0.2s ease;
+        }
+
+        /* Message Box Styles */
+        .message-box {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 3rem auto;
+            text-align: center;
+        }
+
+        .message-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .message-content {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            white-space: pre-line;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 2px;
+            margin-top: 2rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .timer {
+                gap: 1rem;
+            }
+
+            .timer-value {
+                font-size: 1.5rem;
+            }
+
+            .memory-card {
+                padding: 1.5rem;
+            }
+
+            .memory-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jethro & Andrea's Story <i class="fas fa-heart heart-icon"></i></h1>
+            <div class="timer-container">
+                <div class="total-days">Falling in love for <span id="totalDays">0</span> days</div>
+                <div class="timer">
+                    <div class="timer-unit">
+                        <div class="timer-value" id="days">0</div>
+                        <div class="timer-label">days</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="hours">0</div>
+                        <div class="timer-label">hours</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="minutes">0</div>
+                        <div class="timer-label">minutes</div>
+                    </div>
+                    <div class="timer-unit">
+                        <div class="timer-value" id="seconds">0</div>
+                        <div class="timer-label">seconds</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Message Box -->
+        <div class="message-box">
+            <div class="message-title">Dear Honey,</div>
+            <div class="message-content">
+                Hey homoney! Happy Valentine's Day! ❤️
+
+                I love you so much. I'm sorry I can't spend today with you in person but I hope you have a great day and everything with York goes smoothly!!
+
+                I wanted to make you a gift that you could enjoy on Valentine's day without any worries of packages and travelling so this is what I came up with! I hope you like it honey. 
+
+                You're my favorite person ever honey. I love you. (FYI you can use the arrow keys to go back and forth in the timeline)
+
+                Love,
+                Jethro
+            </div>
+        </div>
+
+        <main class="timeline">
+            <div class="controls">
+                <button class="nav-button" id="prevBtn" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="nav-button" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="memory-card" id="currentMemory">
+                <div class="memory-date" id="memoryDate"></div>
+                <h2 class="memory-title" id="memoryTitle"></h2>
+                <div class="polaroid-gallery" id="polaroidGallery"></div>
+                <p class="memory-content" id="memoryContent"></p>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Constants and Data
+        const RELATIONSHIP_START = '2023-06-10';
+        
+        const memories = [
+            {
+                date: '2022-02-14',
+                title: 'Our First Valentine\'s Day',
+                content: 'It\'s been exactly 3 years since our first Valentine\'s Day together! I was supa nervous and had to bring my mom to make sure I chose the best flower for honey. This was the first time we were ever on the terrace together too.',
+                images: [
+                    {
+                        url: 'photos/38070770-dff3-48bd-b0cf-0d191b2869fe.JPG',
+                        caption: 'Valentine\'s Date!'
+                    },
+                    {
+                        url: 'photos/IMG_2064.jpeg',
+                        caption: 'Heart Ravioli :o'
+                    },
+                    {
+                        url: 'photos/IMG_2032.JPG',
+                        caption: 'Le Flower :p'
+                    }
+                ]
+            },
+            {
+                date: '2023-06-10',
+                title: 'Third Times a Charm',
+                content: 'Lol fast forwards a lot. Bro really said "we can\'t just be friends" 💀. Probably the most important night of my life in the past 3 years. Being with my honey has been the best time of my life :) I loved every minute and every day I\'ve spent with you all this time',
+                images: [
+                    {
+                        url: 'photos/IMG_9452.JPG',
+                        caption: 'Graduationnnnn'
+                    },
+                    {
+                        url: 'photos/2a048bfb-4f27-4e77-bb17-3db041772bdd.JPG',
+                        caption: 'The first(-ish) date! Mongkok time'
+                    },
+                    {
+                        url: 'photos/IMG_0100.JPG',
+                        caption: 'At Toby house :p'
+                    }
+                ]
+            },
+            {
+                date: '2023-08-11',
+                title: 'The First Summer and Goodbye',
+                content: 'Summer 2023 was a crazy time for us. I loved all of our dates, the beach, all the bowling, the sweating. It was perfect and I loved every day and minute I spent with you. ( until you were gonna break up with me >:/ )',
+                images: [
+                    {
+                        url: 'photos/IMG_1096.JPG',
+                        caption: 'Beach Date hehehe'
+                    },
+                    {
+                        url: 'photos/IMG_1363.JPG',
+                        caption: 'Goodbye homy :('
+                    },
+                    {
+                        url: 'photos/IMG_1276.JPG',
+                        caption: 'Cheung Chau!'
+                    }
+                ]
+            },
+            {
+                date: '2023-10-10',
+                title: 'Long Distance Begins...',
+                content: 'This marks the start of our long-distance era :( I missed you all day everyday and I still do honey. Calling you is my favorite time of day.',
+                images: [
+                    {
+                        url: 'photos/IMG_1645.jpg',
+                        caption: 'Silly hom'
+                    },
+                    {
+                        url: 'photos/IMG_1903.jpg',
+                        caption: 'Cute gorl'
+                    },
+                    {
+                        url: 'photos/IMG_2718.PNG',
+                        caption: ':O'
+                    }
+                ]
+            },
+            {
+                date: '2023-12-17',
+                title: 'The First Reunion!!!',
+                content: 'If you ask me what the happiest day in my life was it was probably this day. I always remember this hug and I remember thinking it was the best hug in my life. I wanted to hold you in my arms and never let go ever.',
+                images: [
+                    {
+                        url: 'photos/IMG_4113.JPG',
+                        caption: 'Tha ding ding'
+                    },
+                    {
+                        url: 'photos/IMG_3987.JPG',
+                        caption: 'Homy reunite!!'
+                    },
+                    {
+                        url: 'photos/IMG_4133.JPG',
+                        caption: 'Beret in log on :p'
+                    }
+                ]
+            },
+            {
+                date: '2024-01-06',
+                title: 'Goodbye 2: Electric Boogaloo',
+                content: 'I love Christmas. It was always my favorite and probably everyone\'s favorite but I didn\'t feel the magic for years. But spending Christmas with homoney really made it feel like Christmas again, twas like magic :)',
+                images: [
+                    {
+                        url: 'photos/IMG_4448.JPG',
+                        caption: 'Bye bye honey'
+                    },
+                    {
+                        url: 'photos/IMG_4320.JPG',
+                        caption: 'New Years!!'
+                    },
+                    {
+                        url: 'photos/IMG_7071.jpeg',
+                        caption: 'Hanky panky at home?!!?'
+                    }
+                ]
+            },
+            {
+                date: '2024-05-12',
+                title: 'London Trip Part 1',
+                content: 'First time in London with homoney!!!!! Lots of kizzing and hanky panky in da beds >:OOO I missed you a lot hun',
+                images: [
+                    {
+                        url: 'photos/IMG_8608.JPG',
+                        caption: 'Kizz in da bed :O'
+                    },
+                    {
+                        url: 'photos/IMG_6334.jpeg',
+                        caption: 'More kizz'
+                    },
+                    {
+                        url: 'photos/IMG_8634.JPG',
+                        caption: 'Cup noodles in da bed!'
+                    }
+                ]
+            },
+            {
+                date: '2024-08-13',
+                title: 'Wenomechainsama - Taiwan',
+                content: 'A very long and tiring summer of work :p but we ended it off on a bang! Cuz we banged many times in taiwan for reallll',
+                images: [
+                {
+                        url: 'photos/IMG_1079.JPG',
+                        caption: 'Verm climbingggg'
+                    },
+                    {
+                        url: 'photos/IMG_1362.JPG',
+                        caption: 'Moped time (Hom supa scared)'
+                    },
+                    {
+                        url: 'photos/IMG_2077.JPG',
+                        caption: 'Le sunglasses'
+                    }
+                ]
+            },
+            {
+                date: '2024-10-14',
+                title: 'Londs againnnn',
+                content: 'Visiting homy in London again!!!!! I mizzed you and kizzed you many times',
+                images: [
+                    {
+                        url: 'photos/IMG_3498.JPG',
+                        caption: 'Gymkhana!! (Mid asf)'
+                    },
+                    {
+                        url: 'photos/IMG_3379.JPG',
+                        caption: 'Hehehehe getting nakey'
+                    }
+                ]
+            },
+            {
+                date: '2024-12-23',
+                title: 'Christmas 2: Fatties unite',
+                content: 'Da chrizzmuzz. We got supa fat and ate supa much together hom. I love eating with you so much my best friend foreva!!!!',
+                images: [
+                    {
+                        url: 'photos/IMG_0269.JPG',
+                        caption: 'Buns for the buns (gyatt)'
+                    },
+                    {
+                        url: 'photos/IMG_0008.JPG',
+                        caption: 'Chrizzmas'
+                    },
+                    {
+                        url: 'photos/IMG_0249.JPG',
+                        caption: 'Smokin\' hot honey GYATTTT'
+                    }
+                ]
+            },
+            {
+                date: '2025-02-14',
+                title: 'Valentine\'s Day 3????',
+                content: 'Das the end for now honey. That\'s our story so far! Sorry my web development skills are still kinda meh but as we get older and do more stuff I plan to keep adding and make this our love log! In the meantime enjoy some fan service hehe. We can make some changes dou hehe. Happy Valentine\'s Day honey, I love you so much for now and forever. I promise it only gets better from here!',
+                images: [
+                    {
+                        url: 'photos/IMG_4249.JPG',
+                        caption: 'gyatt 1'
+                    },
+                    {
+                        url: 'photos/IMG_4168.JPG',
+                        caption: 'gyatt 2'
+                    },
+                    {
+                        url: 'photos/IMG_4157.JPG',
+                        caption: 'gyatt 3'
+                    }
+                ]
+            }
+
+        ].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // State
+        let currentIndex = 0;
+
+        // DOM Elements
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const memoryElements = {
+            date: document.getElementById('memoryDate'),
+            title: document.getElementById('memoryTitle'),
+            image: document.getElementById('memoryImage'),
+            content: document.getElementById('memoryContent')
+        };
+
+        // Timer Update Function
+        function updateTimer() {
+            const now = new Date();
+            const start = new Date(RELATIONSHIP_START);
+            const difference = now - start;
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((difference / 1000 / 60) % 60);
+            const seconds = Math.floor((difference / 1000) % 60);
+
+            document.getElementById('totalDays').textContent = days;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+
+        // Memory Display Function
+        function displayMemory(index) {
+            const memory = memories[index];
+            
+            const date = new Date(memory.date);
+            date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+            memoryElements.date.textContent = date.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+            memoryElements.title.textContent = memory.title;
+            // Create polaroid gallery
+            const galleryContainer = document.getElementById('polaroidGallery');
+            galleryContainer.innerHTML = '';
+            
+            memory.images.forEach((image, i) => {
+                const polaroid = document.createElement('div');
+                polaroid.className = 'polaroid-container';
+                
+                const img = document.createElement('img');
+                img.className = 'memory-image';
+                img.src = image.url;
+                img.alt = image.caption;
+                
+                const caption = document.createElement('div');
+                caption.className = 'polaroid-caption';
+                caption.textContent = image.caption;
+                
+                polaroid.appendChild(img);
+                polaroid.appendChild(caption);
+                galleryContainer.appendChild(polaroid);
+            });
+            memoryElements.content.textContent = memory.content;
+
+            // Update navigation buttons
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === memories.length - 1;
+
+            // Update progress bar
+            progressBar.style.width = `${(index / (memories.length - 1)) * 100}%`;
+        }
+
+        // Navigation Functions
+        function navigateMemory(direction) {
+            currentIndex = Math.max(0, Math.min(currentIndex + direction, memories.length - 1));
+            displayMemory(currentIndex);
+        }
+
+        // Event Listeners
+        prevBtn.addEventListener('click', () => navigateMemory(-1));
+        nextBtn.addEventListener('click', () => navigateMemory(1));
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                navigateMemory(-1);
+                prevBtn.classList.add('active');
+                setTimeout(() => prevBtn.classList.remove('active'), 200);
+            } else if (e.key === 'ArrowRight') {
+                navigateMemory(1);
+                nextBtn.classList.add('active');
+                setTimeout(() => nextBtn.classList.remove('active'), 200);
+            }
+        });
+
+        // Initialize
+        updateTimer();
+        setInterval(updateTimer, 1000);
+        displayMemory(currentIndex);
+    </script>
+</body>
+</html>
